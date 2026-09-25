@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}WattWise{% endblock %} · WattWise</title>
+  <meta name="description" content="WattWise electricity usage estimation and saving assistant">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar">
+    <a href="{{ url_for('home') }}" class="brand"><span class="brand-mark">⚡</span><span>WattWise</span></a>
+    <nav>
+      <a class="{{ 'active' if request.endpoint == 'home' else '' }}" href="{{ url_for('home') }}">⌂ <span>Home</span></a>
+      <a class="{{ 'active' if request.endpoint == 'dashboard' else '' }}" href="{{ url_for('dashboard') }}">▣ <span>Dashboard</span></a>
+      <a class="{{ 'active' if request.endpoint == 'add_appliance' else '' }}" href="{{ url_for('add_appliance') }}">＋ <span>Add Appliance</span></a>
+      <a class="{{ 'active' if request.endpoint == 'analysis' else '' }}" href="{{ url_for('analysis') }}">◒ <span>Usage Analysis</span></a>
+      <a class="{{ 'active' if request.endpoint == 'suggestions' else '' }}" href="{{ url_for('suggestions') }}">💡 <span>Saving Suggestions</span></a>
+      <a class="{{ 'active' if request.endpoint == 'simulator' else '' }}" href="{{ url_for('simulator') }}">⚙ <span>What-if Simulator</span></a>
+      <a class="{{ 'active' if request.endpoint == 'goal' else '' }}" href="{{ url_for('goal') }}">🎯 <span>Saving Goal</span></a>
+      <a class="{{ 'active' if request.endpoint == 'history' else '' }}" href="{{ url_for('history') }}">◷ <span>Usage History</span></a>
+    </nav>
+    <div class="sidebar-bottom">
+      <a href="{{ url_for('profile_page') }}">👤 <span>Profile</span></a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+      <div>
+        <div class="eyebrow">SMART ENERGY MANAGEMENT</div>
+        <div class="page-title">{% block page_title %}WattWise{% endblock %}</div>
+      </div>
+      <div class="top-actions">
+        <span class="tariff-chip">₹{{ "%.2f"|format(profile.tariff if profile else 8) }}/kWh</span>
+        <a class="avatar" href="{{ url_for('profile_page') }}">{{ (profile.name[0] if profile and profile.name else 'W')|upper }}</a>
+      </div>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-wrap">
+          {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }} <button onclick="this.parentElement.remove()">×</button></div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <section class="content">
+      {% block content %}{% endblock %}
+    </section>
+  </main>
+</div>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Add Appliance{% endblock %}
+{% block page_title %}Add Appliance{% endblock %}
+{% block content %}
+<div class="form-layout">
+  <div class="form-main card">
+    <div class="eyebrow">NEW TRACKING ITEM</div>
+    <h1>Add an appliance</h1>
+    <p class="muted">Enter the information from the appliance label or your best estimate.</p>
+    <form method="post" class="form-grid" id="applianceForm">
+      <label class="span-2">Appliance name
+        <input name="name" required placeholder="e.g. Ceiling Fan">
+      </label>
+      <label>Category
+        <select name="category">
+          <option>Cooling</option><option>Lighting</option><option>Kitchen</option><option>Entertainment</option><option>Computing</option><option>Other</option>
+        </select>
+      </label>
+      <label>Power / Wattage
+        <div class="input-unit"><input name="wattage" type="number" min="0.1" step="0.1" required placeholder="75"><span>W</span></div>
+      </label>
+      <label>Hours per day
+        <div class="input-unit"><input name="hours_per_day" id="hours" type="number" min="0" max="24" step="0.1" required placeholder="8"><span>hrs</span></div>
+      </label>
+      <label>Days per month
+        <div class="input-unit"><input name="days_per_month" id="days" type="number" min="1" max="31" value="30" required><span>days</span></div>
+      </label>
+      <div class="live-estimate span-2"><span>Estimated monthly consumption</span><strong id="liveKwh">0.00 kWh</strong><small>Cost uses your current tariff from Profile.</small></div>
+      <div class="span-2 form-actions"><a class="btn ghost" href="{{ url_for('dashboard') }}">Cancel</a><button class="btn primary" type="submit">Save appliance</button></div>
+    </form>
+  </div>
+  <aside class="tips card">
+    <div class="tip-icon">💡</div><h2>Quick tip</h2>
+    <p>Check the appliance nameplate for wattage. If it says 75 W, enter <strong>75</strong>.</p>
+    <hr>
+    <h3>Example</h3><p>Fan · 75 W · 8 hrs/day · 30 days</p><div class="formula">75 × 8 × 30 ÷ 1000<br><strong>= 18 kWh/month</strong></div>
+  </aside>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+const watt = document.querySelector('[name=wattage]'), hours = document.getElementById('hours'), days = document.getElementById('days'), out = document.getElementById('liveKwh');
+function updateLive(){ out.textContent = (((+watt.value||0)*(+hours.value||0)*(+days.value||0))/1000).toFixed(2)+' kWh'; }
+[watt,hours,days].forEach(x=>x.addEventListener('input',updateLive));
+</script>
+{% endblock %}

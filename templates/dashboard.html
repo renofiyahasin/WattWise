@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block content %}
+<div class="page-intro">
+  <div><h1>Good energy, {{ profile.name.split()[0] if profile.name else 'there' }}.</h1><p>Here’s your estimated monthly electricity picture.</p></div>
+  <a class="btn primary" href="{{ url_for('add_appliance') }}">＋ Add Appliance</a>
+</div>
+
+<div class="metrics">
+  <div class="metric"><span class="metric-icon">⚡</span><div><small>Estimated monthly usage</small><strong>{{ "%.2f"|format(total_kwh) }} <em>kWh</em></strong></div><span class="metric-tag">LIVE</span></div>
+  <div class="metric"><span class="metric-icon">₹</span><div><small>Estimated monthly cost</small><strong>₹{{ "%.2f"|format(total_cost) }}</strong></div><span class="metric-tag">EST.</span></div>
+  <div class="metric"><span class="metric-icon">⌁</span><div><small>Appliances tracked</small><strong>{{ appliances|length }}</strong></div></div>
+</div>
+
+<div class="grid-2">
+  <div class="card">
+    <div class="card-head"><div><span class="eyebrow">YOUR LOAD</span><h2>Appliance breakdown</h2></div><a href="{{ url_for('analysis') }}">View analysis →</a></div>
+    {% if appliances %}
+    <div class="bar-list">
+      {% set maxk = namespace(v=1) %}
+      {% for a in appliances %}
+        {% set k = ((a.wattage*a.hours_per_day*a.days_per_month)/1000) %}
+        {% if k > maxk.v %}{% set maxk.v = k %}{% endif %}
+      {% endfor %}
+      {% for a in appliances[:7] %}
+        {% set k = ((a.wattage*a.hours_per_day*a.days_per_month)/1000) %}
+        <div class="bar-row"><div class="bar-label"><span>{{ a.name }}</span><strong>{{ "%.1f"|format(k) }} kWh</strong></div><div class="bar-track"><div class="bar-fill" style="width:{{ [((k/maxk.v)*100), 3]|max }}%"></div></div></div>
+      {% endfor %}
+    </div>
+    {% else %}
+      <div class="empty"><div>⚡</div><h3>No appliances yet</h3><p>Add an appliance to populate your dashboard.</p><a class="btn primary" href="{{ url_for('add_appliance') }}">Add appliance</a></div>
+    {% endif %}
+  </div>
+
+  <div class="card simulator-card">
+    <div class="card-head"><div><span class="eyebrow">TRY BEFORE YOU CHANGE</span><h2>What-if Saving Simulator</h2></div></div>
+    <p>What happens if you use an appliance for fewer hours? Test the change instantly.</p>
+    <div class="sim-preview"><span>Current</span><strong>6 hrs/day</strong><i>→</i><span>New</span><strong>4 hrs/day</strong></div>
+    <div class="sim-result"><small>Example potential</small><strong>2 hours/day saved</strong><span>Use your own numbers for an accurate estimate.</span></div>
+    <a class="btn dark full" href="{{ url_for('simulator') }}">Open simulator →</a>
+  </div>
+</div>
+
+<div class="card disclaimer">
+  <strong>Calculation basis</strong>
+  <span>(Wattage × Hours/day × Days/month) ÷ 1000 = estimated kWh</span>
+  <span>Estimated kWh × your tariff = estimated cost</span>
+</div>
+{% endblock %}

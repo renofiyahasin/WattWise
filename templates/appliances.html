@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Appliances{% endblock %}
+{% block page_title %}Appliances{% endblock %}
+{% block content %}
+<div class="page-intro"><div><h1>Your appliances</h1><p>Manage the devices used in your estimate.</p></div><a class="btn primary" href="{{ url_for('add_appliance') }}">＋ Add Appliance</a></div>
+<div class="card table-card">
+  {% if appliances %}
+  <div class="table-wrap"><table><thead><tr><th>Appliance</th><th>Category</th><th>Power</th><th>Usage</th><th>Est. kWh</th><th>Action</th></tr></thead><tbody>
+  {% for a in appliances %}
+  <tr><td><strong>{{ a.name }}</strong></td><td><span class="category">{{ a.category }}</span></td><td>{{ "%.0f"|format(a.wattage) }} W</td><td>{{ "%.1f"|format(a.hours_per_day) }} h/day · {{ a.days_per_month }} days</td><td><strong>{{ "%.2f"|format(a.wattage*a.hours_per_day*a.days_per_month/1000) }}</strong></td><td><form method="post" action="{{ url_for('delete_appliance', appliance_id=a.id) }}" onsubmit="return confirm('Remove this appliance?')"><button class="icon-btn danger" title="Delete">⌫</button></form></td></tr>
+  {% endfor %}
+  </tbody></table></div>
+  {% else %}<div class="empty"><div>＋</div><h3>No appliances</h3><p>Start by adding your first appliance.</p></div>{% endif %}
+</div>
+{% endblock %}

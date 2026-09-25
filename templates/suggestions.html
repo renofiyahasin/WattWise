@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Saving Suggestions{% endblock %}
+{% block page_title %}Saving Suggestions{% endblock %}
+{% block content %}
+<div class="page-intro"><div><h1>Small changes, measurable savings.</h1><p>Suggestions are generated from the usage data you entered.</p></div></div>
+<div class="suggestion-grid">
+{% for s in suggestions %}
+<div class="suggestion card"><div class="suggestion-top"><span class="lightbulb">💡</span>{% if s.saving %}<span class="saving-badge">₹{{ "%.0f"|format(s.saving) }} possible</span>{% endif %}</div><h2>{{ s.title }}</h2><p>{{ s.text }}</p><a href="{{ url_for('simulator') }}">Test this change →</a></div>
+{% endfor %}
+</div>
+<div class="card tips-strip"><strong>General energy habits</strong><span>• Switch off unused devices</span><span>• Reduce high-hour appliance use</span><span>• Avoid unnecessary standby</span><span>• Compare efficient models when replacing appliances</span></div>
+{% endblock %}

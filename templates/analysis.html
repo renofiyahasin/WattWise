@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Usage Analysis{% endblock %}
+{% block page_title %}Usage Analysis{% endblock %}
+{% block content %}
+<div class="page-intro"><div><h1>Usage analysis</h1><p>Find the appliances with the biggest estimated energy impact.</p></div></div>
+<div class="grid-2">
+  <div class="card"><div class="card-head"><div><span class="eyebrow">BY APPLIANCE</span><h2>Energy contribution</h2></div></div>
+  {% if data %}
+  <div class="rank-list">
+  {% set maxk = data[0].kwh if data else 1 %}
+  {% for d in data %}
+    <div class="rank-item"><div class="rank-number">{{ loop.index }}</div><div class="rank-info"><strong>{{ d.name }}</strong><span>{{ d.category }} · ₹{{ "%.0f"|format(d.cost) }}/month</span><div class="bar-track"><div class="bar-fill" style="width:{{ [d.kwh/maxk*100,3]|max }}%"></div></div></div><b>{{ d.kwh }} kWh</b></div>
+  {% endfor %}
+  </div>
+  {% else %}<div class="empty"><div>◒</div><h3>Add appliances to analyze</h3></div>{% endif %}
+  </div>
+  <div class="card"><div class="card-head"><div><span class="eyebrow">FORMULA</span><h2>How estimates work</h2></div></div>
+    <div class="formula large">(W × hours/day × days) ÷ 1000<br><strong>= estimated kWh</strong></div>
+    <p class="muted">Then WattWise multiplies the estimated kWh by your tariff to produce an estimated cost.</p>
+    <div class="notice compact"><span>ⓘ</span><div>This is an estimate based on your entries, not an actual meter reading.</div></div>
+  </div>
+</div>
+<div class="card table-card"><div class="card-head"><div><span class="eyebrow">RECENT MONTHS</span><h2>History summary</h2></div></div>
+{% if history %}<div class="table-wrap"><table><thead><tr><th>Month</th><th>Estimated energy</th><th>Estimated cost</th></tr></thead><tbody>{% for h in history %}<tr><td>{{ h.month }}</td><td>{{ h.kwh }} kWh</td><td>₹{{ "%.2f"|format(h.cost) }}</td></tr>{% endfor %}</tbody></table></div>{% else %}<p class="muted">Your history will appear after you add appliances.</p>{% endif %}
+</div>
+{% endblock %}

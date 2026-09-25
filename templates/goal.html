@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Saving Goal{% endblock %}
+{% block page_title %}Monthly Saving Goal{% endblock %}
+{% block content %}
+<div class="goal-wrap">
+<div class="card goal-card"><div class="goal-icon">🎯</div><div class="eyebrow">YOUR TARGET</div><h1>Make saving measurable.</h1><p>Set a monthly rupee target and track your current estimated cost against it.</p>
+<form method="post" class="goal-form"><div class="input-unit"><span>₹</span><input name="monthly_goal" type="number" min="0" step="10" value="{{ profile.monthly_goal }}"></div><button class="btn primary">Update goal</button></form></div>
+<div class="card progress-card"><span class="eyebrow">ESTIMATED PROGRESS</span><h2>₹{{ "%.2f"|format(total) }}</h2><p>Current tracked estimated cost</p><div class="progress"><div style="width:{{ progress }}%"></div></div><div class="progress-meta"><span>0%</span><strong>{{ progress }}%</strong><span>Goal ₹{{ "%.0f"|format(profile.monthly_goal) }}</span></div><div class="notice compact"><span>ⓘ</span><div>Goal progress here is a simple tracker using your stored estimates; it is not a real bill payment tracker.</div></div></div>
+</div>
+{% endblock %}

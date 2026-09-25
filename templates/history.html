@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Usage History{% endblock %}
+{% block page_title %}Usage History{% endblock %}
+{% block content %}
+<div class="page-intro"><div><h1>Usage history</h1><p>Every appliance calculation is recorded here.</p></div></div>
+<div class="card table-card">
+{% if history %}<div class="table-wrap"><table><thead><tr><th>Date</th><th>Appliance</th><th>Input</th><th>Estimated kWh</th><th>Estimated cost</th></tr></thead><tbody>
+{% for h in history %}<tr><td>{{ h.created_at }}</td><td><strong>{{ h.appliance_name }}</strong></td><td>{{ "%.0f"|format(h.wattage) }} W · {{ "%.1f"|format(h.hours_per_day) }} h/day · {{ h.days_per_month }} days</td><td>{{ "%.2f"|format(h.kwh) }}</td><td>₹{{ "%.2f"|format(h.cost) }}</td></tr>{% endfor %}
+</tbody></table></div>{% else %}<div class="empty"><div>◷</div><h3>No history yet</h3><p>Add an appliance to start building history.</p></div>{% endif %}
+</div>
+{% endblock %}

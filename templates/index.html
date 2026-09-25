@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block page_title %}Energy made understandable{% endblock %}
+{% block content %}
+<div class="hero">
+  <div class="hero-copy">
+    <div class="pill">⚡ SMART ELECTRICITY ESTIMATOR</div>
+    <h1>Know where your energy goes.<br><span>Save with confidence.</span></h1>
+    <p>WattWise turns appliance wattage and daily usage into simple monthly estimates, actionable suggestions and what-if savings simulations.</p>
+    <div class="hero-actions">
+      <a class="btn primary" href="{{ url_for('add_appliance') }}">＋ Add your first appliance</a>
+      <a class="btn ghost" href="{{ url_for('dashboard') }}">View dashboard →</a>
+    </div>
+    <div class="trust-row"><span>✓ No hardware required</span><span>✓ SQLite powered</span><span>✓ User-controlled tariff</span></div>
+  </div>
+  <div class="hero-visual">
+    <div class="orb">⚡</div>
+    <div class="mini-card c1"><span>Estimated cost</span><strong>₹1,284</strong><small>this month</small></div>
+    <div class="mini-card c2"><span>Energy use</span><strong>160.5 <small>kWh</small></strong><div class="spark">▁▃▂▅▃▆</div></div>
+    <div class="mini-card c3"><span>Saving potential</span><strong>₹320</strong><small>possible / month</small></div>
+  </div>
+</div>
+
+<div class="section-head"><div><div class="eyebrow">HOW IT WORKS</div><h2>From appliance to insight</h2></div></div>
+<div class="steps">
+  <div class="step"><b>01</b><div class="step-icon">＋</div><h3>Add appliances</h3><p>Enter wattage, hours per day and days per month.</p></div>
+  <div class="step"><b>02</b><div class="step-icon">∑</div><h3>Calculate</h3><p>WattWise estimates kWh and cost using your tariff.</p></div>
+  <div class="step"><b>03</b><div class="step-icon">◒</div><h3>Understand</h3><p>See which appliances contribute most to your bill.</p></div>
+  <div class="step"><b>04</b><div class="step-icon">💡</div><h3>Save</h3><p>Test changes before you make them with the simulator.</p></div>
+</div>
+
+<div class="notice">
+  <span>ⓘ</span>
+  <div><strong>Estimate, not a meter reading</strong><p>WattWise calculates estimated consumption from the data you enter. It does not connect to or measure an actual electricity meter.</p></div>
+</div>
+{% endblock %}

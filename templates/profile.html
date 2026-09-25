@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Profile{% endblock %}
+{% block page_title %}Profile & Tariff{% endblock %}
+{% block content %}
+<div class="form-layout">
+<div class="form-main card"><div class="eyebrow">SETTINGS</div><h1>Your profile</h1><p class="muted">Your tariff is used for all estimated cost calculations.</p>
+<form method="post" class="form-grid">
+<label class="span-2">Name<input name="name" value="{{ profile.name }}" required></label>
+<label class="span-2">Email<input name="email" type="email" value="{{ profile.email }}" placeholder="you@example.com"></label>
+<label>Electricity tariff<div class="input-unit"><span>₹</span><input name="tariff" type="number" min="0" step="0.01" value="{{ profile.tariff }}" required><span>/kWh</span></div></label>
+<label>Monthly saving goal<div class="input-unit"><span>₹</span><input name="monthly_goal" type="number" min="0" step="10" value="{{ profile.monthly_goal }}" required></div></label>
+<div class="span-2 form-actions"><button class="btn primary">Save profile</button></div>
+</form></div>
+<div class="card profile-preview"><div class="avatar large">{{ profile.name[0]|upper if profile.name else 'W' }}</div><h2>{{ profile.name }}</h2><p>{{ profile.email or 'No email added' }}</p><div class="profile-stat"><span>Tariff</span><strong>₹{{ "%.2f"|format(profile.tariff) }}/kWh</strong></div><div class="profile-stat"><span>Goal</span><strong>₹{{ "%.0f"|format(profile.monthly_goal) }}/month</strong></div></div>
+</div>
+{% endblock %}

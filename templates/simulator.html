@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}What-if Simulator{% endblock %}
+{% block page_title %}What-if Saving Simulator{% endblock %}
+{% block content %}
+<div class="simulator-header"><div><div class="eyebrow">PLAN BEFORE YOU CHANGE</div><h1>What if you used it less?</h1><p>Compare current and proposed usage using your tariff of <strong>₹{{ "%.2f"|format(profile.tariff) }}/kWh</strong>.</p></div></div>
+<div class="form-layout">
+<div class="form-main card">
+<form method="post" class="form-grid">
+<label>Appliance wattage<div class="input-unit"><input name="wattage" type="number" min="0.1" step="0.1" required placeholder="1500"><span>W</span></div></label>
+<label>Days per month<div class="input-unit"><input name="days" type="number" min="1" max="31" value="30" required><span>days</span></div></label>
+<label>Current usage<div class="input-unit"><input name="current_hours" type="number" min="0" max="24" step="0.1" required placeholder="6"><span>hrs/day</span></div></label>
+<label>New usage<div class="input-unit"><input name="new_hours" type="number" min="0" max="24" step="0.1" required placeholder="4"><span>hrs/day</span></div></label>
+<div class="span-2"><button class="btn primary full" type="submit">Calculate saving →</button></div>
+</form>
+</div>
+<div class="card simulator-side"><div class="tip-icon">⚡</div><h2>Example</h2><p>AC: <strong>1500 W</strong><br>Current: <strong>6 hrs/day</strong><br>New: <strong>4 hrs/day</strong></p><p class="muted">The app calculates the difference in estimated kWh and ₹ cost.</p></div>
+</div>
+{% if result %}
+<div class="result-card">
+<div class="result-main"><span>Estimated monthly saving</span><strong>₹{{ "%.2f"|format(result.saved_cost) }}</strong><p>{{ result.saved_kwh }} kWh less energy · {{ result.reduction }}% usage reduction</p></div>
+<div class="result-compare"><div><small>Current</small><strong>{{ result.old_kwh }} kWh</strong><span>₹{{ "%.2f"|format(result.old_cost) }}</span></div><i>→</i><div><small>New</small><strong>{{ result.new_kwh }} kWh</strong><span>₹{{ "%.2f"|format(result.new_cost) }}</span></div></div>
+</div>
+{% endif %}
+<div class="notice"><span>ⓘ</span><div><strong>Important</strong><p>Simulator results are estimates based on the wattage, usage and tariff you enter. Actual electricity bills can differ because of slabs, fixed charges, taxes and real appliance operating cycles.</p></div></div>
+{% endblock %}
